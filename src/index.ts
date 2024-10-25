@@ -1,18 +1,32 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Bind resources to your worker in `wrangler.toml`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+// src/index.ts
+export interface Env {
+	// If you have environment variables, define them here
+}
 
 export default {
-	async fetch(request, env, ctx): Promise<Response> {
-		return new Response('Hello World!');
+	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+		const url = new URL(request.url);
+
+		if (url.hostname === 'nextblock1.mylo.dev') {
+			url.hostname = 'joinnextblock.com';
+			url.pathname = '/advetisers';
+		} else if (url.hostname === 'nextblock2.mylo.dev') {
+			url.hostname = 'joinnextblock.com';
+			url.pathname = '/developers';
+		}
+
+		// preserve original headers but update host
+		const headers = new Headers(request.headers);
+		headers.set('host', url.hostname);
+
+		const modifiedRequest = new Request(url.toString(), {
+			...request,
+			headers,
+		});
+
+		return fetch(modifiedRequest).catch((err) => {
+			console.error('DEBUG proxy error:', err);
+			return new Response('Proxy Error', { status: 500 });
+		});
 	},
-} satisfies ExportedHandler<Env>;
+};
