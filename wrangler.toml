@@ -5,8 +5,8 @@ compatibility_date = "2024-10-22"
 compatibility_flags = ["nodejs_compat"]
 
 routes = [
-  "nextblock1.mylo.dev/*",
-  "nextblock2.mylo.dev/*"
+  "pubkey-domain-1.mylo.dev/*",
+  "pubkey-domain-2.mylo.dev/*"
 ]
 
 [observability]

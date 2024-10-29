@@ -7,10 +7,10 @@ export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
 		const url = new URL(request.url);
 
-		if (url.hostname === 'nextblock1.mylo.dev') {
+		if (url.hostname === 'pubkey-domain-1.mylo.dev') {
 			url.hostname = 'multi-domain-1.framer.ai';
 			url.pathname = '/bar/home';
-		} else if (url.hostname === 'nextblock2.mylo.dev') {
+		} else if (url.hostname === 'pubkey-domain-2.mylo.dev') {
 			url.hostname = 'multi-domain-1.framer.ai';
 			url.pathname = '/corporate/home';
 		}
