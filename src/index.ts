@@ -8,11 +8,11 @@ export default {
 		const url = new URL(request.url);
 
 		if (url.hostname === 'nextblock1.mylo.dev') {
-			url.hostname = 'joinnextblock.com';
-			url.pathname = '/advetisers';
+			url.hostname = 'multi-domain-1.framer.ai';
+			url.pathname = '/bar/home';
 		} else if (url.hostname === 'nextblock2.mylo.dev') {
-			url.hostname = 'joinnextblock.com';
-			url.pathname = '/developers';
+			url.hostname = 'multi-domain-1.framer.ai';
+			url.pathname = '/corporate/home';
 		}
 
 		// preserve original headers but update host
