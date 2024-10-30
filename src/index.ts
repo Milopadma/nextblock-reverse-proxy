@@ -9,7 +9,7 @@ export default {
 
 		if (url.hostname === 'pubkey-domain-1.mylo.dev') {
 			url.hostname = 'multi-domain-1.framer.ai';
-			url.pathname = '/bar/home';
+			url.pathname = '/bar/nyc/home';
 		} else if (url.hostname === 'pubkey-domain-2.mylo.dev') {
 			url.hostname = 'multi-domain-1.framer.ai';
 			url.pathname = '/corporate/home';
