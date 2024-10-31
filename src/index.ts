@@ -16,7 +16,6 @@ export default {
 			url.hostname = 'multi-domain-1.framer.ai';
 			targetPath = '/corporate/home';
 		} else if (url.hostname === 'multi-domain-1.framer.ai') {
-			// block direct access to main domain
 			return new Response('Not Found', { status: 404 });
 		}
 
@@ -41,6 +40,23 @@ export default {
 			return new Response('Proxy Error', { status: 500 });
 		});
 
+		// get the response body as text
+		const text = await response.text();
+
+		// replace any mentions of the main domain in the HTML
+		const modifiedText = text
+			.replace(/multi-domain-1\.framer\.ai/g, originalHost)
+			// add meta tags for sharing
+			.replace(
+				'</head>',
+				`
+				<meta property="og:url" content="${canonicalUrl.toString()}" />
+				<meta name="twitter:url" content="${canonicalUrl.toString()}" />
+				<link rel="canonical" href="${canonicalUrl.toString()}" />
+				</head>
+			`
+			);
+
 		const newHeaders = new Headers(response.headers);
 		newHeaders.set('X-Frame-Options', 'SAMEORIGIN');
 		newHeaders.set(
@@ -57,12 +73,14 @@ export default {
 		newHeaders.set('Referrer-Policy', 'no-referrer');
 		newHeaders.delete('X-Robots-Tag');
 		newHeaders.delete('robots');
-		// prevent any origin exposure
 		newHeaders.delete('Server');
 		newHeaders.delete('X-Powered-By');
 		newHeaders.delete('Via');
 
-		return new Response(response.body, {
+		// update content length for modified body
+		newHeaders.set('Content-Length', modifiedText.length.toString());
+
+		return new Response(modifiedText, {
 			status: response.status,
 			statusText: response.statusText,
 			headers: newHeaders,
