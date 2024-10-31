@@ -18,6 +18,7 @@ export default {
 		// preserve original headers but update host
 		const headers = new Headers(request.headers);
 		headers.set('host', url.hostname);
+		headers.set('Link', `<${url.toString()}>; rel="canonical"`);
 
 		const modifiedRequest = new Request(url.toString(), {
 			...request,
