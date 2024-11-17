@@ -1,0 +1,9 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# they will be requested for review when someone opens a pull request.
+* @milopadma
+
+# Specific file ownership
+/src/ @milopadma
+/test/ @milopadma
+wrangler.toml @milopadma 
